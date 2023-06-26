@@ -16,7 +16,7 @@ import { routeGuard } from './route.guard';
 
 const routes: Routes = [
   {path:"login", component:LoginComponent, canActivate: [routeGuard]},
-  {path:"home", component:HomeComponent, canActivate: [routeGuard]},
+  {path:"home", component:HomeComponent},
   {path:"lesson/:id", component:LessonDetailsComponent, canActivate: [routeGuard]},
   {path:"module/:id", component:ModuleDetailsComponent, canActivate: [routeGuard]},
   {path:"permissions", component:PermissionListComponent, canActivate: [routeGuard]},

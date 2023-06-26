@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import { TrainingListComponent } from './training-list/training-list.component';
 import { RoleListComponent } from './role-list/role-list.component';
 import { PermissionListComponent } from './permission-list/permission-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

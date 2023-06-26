@@ -6,21 +6,47 @@ export const routeGuard: CanActivateFn = (
   route:ActivatedRouteSnapshot,
   state:RouterStateSnapshot
   ): Observable<boolean> | boolean => {
-  const token = localStorage.getItem("token")
-  const router = new Router()
+  const token = localStorage.getItem("token");
+  const router = new Router();
+  const routesRole2 = [
+    "lesson/:id",
+    "module/:id",
+    "profil/:id",
+    "training/:id",
+    "trainings",
+    "users"
+  ];
+  const routesRole1 = [
+    "permissions",
+    "roles"
+  ]
+  
   if(token){
-    if(route.routeConfig?.path === "login"){
+    if(route.routeConfig?.path === "login" || route.routeConfig?.path === "signup"){
       router.navigate(["/home"]);
       return false
     }
-    const tokenContent = jwtDecode(token);
-    console.log(tokenContent)
+    const tokenContent: {
+      id:number,
+      username:string,
+      role:number,
+      iat: number,
+      exp: number
+    } = jwtDecode(token);
+    if(tokenContent.exp < Math.floor(Date.now()/1000)){
+      localStorage.removeItem("token")
+      router.navigate(["/home"]);
+      return false;
+    }
+    if(route.routeConfig?.path){
+      if(tokenContent.role === 2 && routesRole2.includes(route.routeConfig.path)) return true
+      if(tokenContent.role === 1 && (routesRole2.includes(route.routeConfig.path) || routesRole1.includes(route.routeConfig.path))) return true
+    }
   }else{
     if(route.routeConfig?.path === "login" || route.routeConfig?.path === "home"){
-      return true
+      return true;
     }
   }
-  console.log(route.routeConfig?.path)
   router.navigate(["/home"]);
   return false;
 };
