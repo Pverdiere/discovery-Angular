@@ -1,0 +1,23 @@
+<div *ngIf="actif">
+    <div *ngIf="content.error">
+        <div>
+            {{content.error.title}}
+        </div>
+        <div>
+            {{content.error.message}}
+        </div>
+    </div>
+    <div *ngIf="content.warning">
+        <div>
+            {{content.warning.title}}
+        </div>
+        <div>
+            {{content.warning.message}}
+        </div>
+    </div>
+    <div *ngIf="content.buttons">
+        <button *ngFor="let button of content.buttons" (click)="choiceFunction(button.function)" type="{{button.type}}">
+            {{button.content}}
+        </button>
+    </div>
+</div>

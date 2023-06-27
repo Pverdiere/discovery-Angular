@@ -22,7 +22,6 @@ export class LoginComponent {
   ) {}
 
   validation(): void {
-    console.log(this.user)
     this.userService.login(this.user).subscribe({
       next: response => {
         localStorage.setItem("token",response.access_token);

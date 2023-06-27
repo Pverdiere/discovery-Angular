@@ -33,3 +33,19 @@ export interface Lesson {
     createdAt?:string,
     updatedAt?:string
 }
+
+export interface Modal {
+    error?:{
+      title:string,
+      message:string
+    },
+    warning?:{
+      title:string,
+      message:string
+    },
+    buttons?:{
+        type:string,
+        content:string,
+        function:string
+    }[]
+}

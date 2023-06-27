@@ -18,6 +18,14 @@ export class UserService {
     return this.http.post<any>(this.serverUrl+"/login",user)
   }
 
+  renewToken(): Observable<any>{
+    const token = localStorage.getItem("token");
+    return this.http.get<any>(
+      this.serverUrl+"/renewToken",
+      {headers:new HttpHeaders().set("Authorization", "Bearer "+token)}
+    )
+  }
+
   getUsers(): Observable<User[]>{
     const token = localStorage.getItem("token");
     return this.http.get<User[]>(

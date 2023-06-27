@@ -17,6 +17,7 @@ import { RoleListComponent } from './role-list/role-list.component';
 import { PermissionListComponent } from './permission-list/permission-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FormsModule } from '@angular/forms';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FormsModule } from '@angular/forms';
     TrainingListComponent,
     RoleListComponent,
     PermissionListComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
