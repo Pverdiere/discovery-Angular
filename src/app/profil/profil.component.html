@@ -1,1 +1,36 @@
-<p>profil works!</p>
+<div *ngIf="user">
+    <div>
+        <h2>Détails de l'utilisateur</h2>
+        <ul>
+            <li>username: {{user.name}}</li>
+            <li>id: {{user.id}}</li>
+            <li>roleId: {{user.roleId}}</li>
+        </ul>
+    </div>
+    <div>
+        <h2>Formation suivis</h2>
+        <div *ngIf="user.trainings && user.trainings.length > 0; else noTrainings">
+            <ul>
+                <li *ngFor="let training of user.trainings">
+                    {{training.training.name}}
+                </li>
+            </ul>
+        </div>
+        <ng-template #noTrainings>
+            Pas de formation en cours
+        </ng-template>
+    </div>
+    <div *ngIf="user.roleId == 1">
+        <h2>Leçon écrites</h2>
+        <div *ngIf="user.lessonsAuthored && user.lessonsAuthored.length > 0; else noLesson">
+            <ul>
+                <li *ngFor="let lesson of user.lessonsAuthored">
+                    {{lesson.name}}
+                </li>
+            </ul>
+        </div>
+        <ng-template #noLesson>
+            Cet utilisateur n'a pas encore écrit de lesson
+        </ng-template>
+    </div>
+</div>

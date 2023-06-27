@@ -6,7 +6,7 @@ export interface User {
     createdAt?: string,
     updatedAt?: string,
     trainings?: {training: Training}[],
-    lessonAuthored?: Lesson[]
+    lessonsAuthored?: Lesson[]
 }
 
 export interface Training {
@@ -26,10 +26,10 @@ export interface Token {
 }
 
 export interface Lesson {
-    id:number,
-    authorId:number,
+    id?:number,
+    authorId?:number,
     name:string,
-    content:string,
-    createdAt:string,
-    updatedAt:string
+    content?:string,
+    createdAt?:string,
+    updatedAt?:string
 }
