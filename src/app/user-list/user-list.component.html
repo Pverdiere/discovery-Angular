@@ -1,1 +1,6 @@
-<p>user-list works!</p>
+<div *ngFor="let user of users">
+    <div>id: {{user.id}}</div>
+    <div>name: <a routerLink="/profil/{{user.id}}">{{user.name}}</a></div>
+    <div>role: {{user.roleId}}</div>
+    <hr>
+</div>

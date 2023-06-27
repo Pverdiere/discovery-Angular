@@ -1,6 +1,7 @@
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { Observable } from 'rxjs';
+import { Token } from './interface';
 
 export const routeGuard: CanActivateFn = (
   route:ActivatedRouteSnapshot,
@@ -20,19 +21,13 @@ export const routeGuard: CanActivateFn = (
     "permissions",
     "roles"
   ]
-  
+
   if(token){
     if(route.routeConfig?.path === "login" || route.routeConfig?.path === "signup"){
       router.navigate(["/home"]);
       return false
     }
-    const tokenContent: {
-      id:number,
-      username:string,
-      role:number,
-      iat: number,
-      exp: number
-    } = jwtDecode(token);
+    const tokenContent: Token = jwtDecode(token);
     if(tokenContent.exp < Math.floor(Date.now()/1000)){
       localStorage.removeItem("token")
       router.navigate(["/home"]);

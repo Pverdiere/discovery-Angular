@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { User } from '../interface';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { Token } from '../interface';
+import jwtDecode from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -23,9 +25,9 @@ export class LoginComponent {
     console.log(this.user)
     this.userService.login(this.user).subscribe({
       next: response => {
-        console.log("test");
         localStorage.setItem("token",response.access_token);
-        this.router.navigate(["/profile"]);
+        const token: Token = jwtDecode(response.access_token);
+        this.router.navigate(["/profil/"+token.id]);
       },
       error: error => {
         console.log(error)
