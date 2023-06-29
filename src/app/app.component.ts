@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Token, Modal } from './interface';
+import { Token } from './interface';
 import { Router } from '@angular/router';
+import { ContextService } from './context.service';
 import jwtDecode from 'jwt-decode';
-import { routeGuard } from './route.guard';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +11,23 @@ import { routeGuard } from './route.guard';
 })
 export class AppComponent {
   modalActif:boolean = false;
-  contentModal:Modal = {};
+  connected:boolean = false;
 
   constructor(
-    private route: Router
-  ) {}
+    private route: Router,
+    private contextService: ContextService
+  ) {
+    contextService.connected$.subscribe(
+      value => {
+        this.connected = value
+      }
+    )
+    contextService.modalActif$.subscribe(
+      value => {
+        this.modalActif = value
+      }
+    )
+  }
 
   ngOnInit():void{
     this.verifExpToken()
@@ -26,14 +38,14 @@ export class AppComponent {
     if(token){
       const payload:Token = jwtDecode(token)
       if(payload.exp - Math.floor(Date.now()/1000) < 0){
-        localStorage.removeItem("token");
-        this.modalActif = false;
-        this.contentModal = {};
-        this.route.navigate(["/home"]);
+        this.logout()
       }
-      if(payload.exp - Math.floor(Date.now()/1000) < 600 && ! this.modalActif){
-        this.modalActif = true;
-        this.contentModal = {
+      if(!this.connected){
+        this.contextService.isConnected(true)
+      }
+      if(payload.exp - Math.floor(Date.now()/1000) < 600 && !this.modalActif){
+        this.contextService.modalIsActif(true);
+        this.contextService.changeModalContent({
           warning:{
             title: "Fin de session",
             message: "Attention! Votre session arrive à sa fin. Voullez vous la renouveler ?"
@@ -49,18 +61,19 @@ export class AppComponent {
               function: "close"
             }
           ]
-        }
+        })
       }
-      console.log(payload.exp - Math.floor(Date.now()/1000))
     }
     setTimeout(() => {
       this.verifExpToken()
-    },10000)
+    },600000)
   }
 
-  changeModalActif(newValue: boolean):void {
-    this.modalActif = newValue;
-    this.contentModal = {};
-    console.log(newValue)
+  logout():void{
+    localStorage.removeItem("token");
+    this.contextService.modalIsActif(false);
+    this.contextService.changeModalContent({})
+    this.contextService.isConnected(false)
+    this.route.navigate(["/home"]);
   }
 }

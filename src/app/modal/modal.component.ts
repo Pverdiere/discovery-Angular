@@ -1,6 +1,7 @@
-import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserService } from '../user.service';
-import { Modal } from "../interface"
+import { ContextService } from '../context.service';
+import { Modal } from "../interface";
 
 @Component({
   selector: 'app-modal',
@@ -8,13 +9,18 @@ import { Modal } from "../interface"
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent {
-  @Input() actif: boolean = false
-  @Input() content: Modal = {}
-  @Output() changeActifEvent = new EventEmitter<boolean>()
+  content: Modal = {}
 
   constructor(
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private contextService: ContextService
+  ) {
+    contextService.modalContent$.subscribe(
+      value => {
+        this.content = value
+      }
+    )
+  }
 
   choiceFunction(choice:string):void{
     switch(choice){
@@ -40,6 +46,7 @@ export class ModalComponent {
   }
 
   fermeture():void{
-    this.changeActifEvent.emit(false)
+    this.contextService.changeModalContent({})
+    this.contextService.modalIsActif(false)
   }
 }

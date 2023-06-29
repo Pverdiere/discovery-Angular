@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../interface';
 import { UserService } from '../user.service';
+import { ContextService } from '../context.service';
 import { Router } from '@angular/router';
 import { Token } from '../interface';
 import jwtDecode from 'jwt-decode';
@@ -18,6 +19,7 @@ export class LoginComponent {
 
   constructor(
     private userService: UserService,
+    private contextService: ContextService,
     private router: Router
   ) {}
 
@@ -26,6 +28,7 @@ export class LoginComponent {
       next: response => {
         localStorage.setItem("token",response.access_token);
         const token: Token = jwtDecode(response.access_token);
+        this.changeConnected();
         this.router.navigate(["/profil/"+token.id]);
       },
       error: error => {
@@ -33,5 +36,9 @@ export class LoginComponent {
         if(error) console.log("test")
       }
     })
+  }
+
+  changeConnected():void {
+    this.contextService.isConnected(true)
   }
 }

@@ -1,3 +1,12 @@
-<nav></nav>
+<nav>
+  <button *ngIf="connected; else logoutBtn" (click)="logout()">
+    Déconnexion
+  </button>
+  <ng-template #logoutBtn>
+    <button>
+      <a routerLink="/login">Connexion</a>
+    </button>
+  </ng-template>
+</nav>
 <router-outlet></router-outlet>
-<app-modal [actif]="modalActif" [content]="contentModal" (changeActifEvent)="changeModalActif($event)"></app-modal>
+<app-modal></app-modal>
