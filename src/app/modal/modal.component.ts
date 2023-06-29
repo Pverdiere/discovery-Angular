@@ -10,6 +10,7 @@ import { Modal } from "../interface";
 })
 export class ModalComponent {
   content: Modal = {}
+  modalActif:boolean = false
 
   constructor(
     private userService: UserService,
@@ -20,12 +21,17 @@ export class ModalComponent {
         this.content = value
       }
     )
+    contextService.modalActif$.subscribe(
+      value => {
+        this.modalActif = value
+      }
+    )
   }
 
   choiceFunction(choice:string):void{
     switch(choice){
-      case "close":
-        this.fermeture()
+      case "noRenew":
+        this.noRenew()
         break;
       case "renewToken":
         this.renewToken()
@@ -43,6 +49,11 @@ export class ModalComponent {
         console.log(error)
       }
     })
+  }
+
+  noRenew():void {
+    this.contextService.changeRenewToken(false);
+    this.fermeture();
   }
 
   fermeture():void{

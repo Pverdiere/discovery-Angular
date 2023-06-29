@@ -12,6 +12,7 @@ import jwtDecode from 'jwt-decode';
 export class AppComponent {
   modalActif:boolean = false;
   connected:boolean = false;
+  alertRenewToken:boolean = true;
 
   constructor(
     private route: Router,
@@ -27,6 +28,11 @@ export class AppComponent {
         this.modalActif = value
       }
     )
+    contextService.alertRenewToken$.subscribe(
+      value => {
+        this.alertRenewToken = value
+      }
+    )
   }
 
   ngOnInit():void{
@@ -37,43 +43,46 @@ export class AppComponent {
     const token = localStorage.getItem("token")
     if(token){
       const payload:Token = jwtDecode(token)
+      console.log(payload.exp - Math.floor(Date.now()/1000))
       if(payload.exp - Math.floor(Date.now()/1000) < 0){
         this.logout()
-      }
-      if(!this.connected){
-        this.contextService.isConnected(true)
-      }
-      if(payload.exp - Math.floor(Date.now()/1000) < 600 && !this.modalActif){
-        this.contextService.modalIsActif(true);
-        this.contextService.changeModalContent({
-          warning:{
-            title: "Fin de session",
-            message: "Attention! Votre session arrive à sa fin. Voullez vous la renouveler ?"
-          },buttons:[
-            {
-              type:"button",
-              content:"Oui",
-              function:"renewToken"
-            },
-            {
-              type:"button",
-              content: "Non",
-              function: "close"
-            }
-          ]
-        })
+      }else{
+        if(!this.connected){
+          this.contextService.isConnected(true)
+        }
+        if(this.alertRenewToken && payload.exp - Math.floor(Date.now()/1000) < 600 && !this.modalActif){
+          this.contextService.modalIsActif(true);
+          this.contextService.changeModalContent({
+            warning:{
+              title: "Fin de session",
+              message: "Attention! Votre session arrive à sa fin. Voullez vous la renouveler ?"
+            },buttons:[
+              {
+                type:"button",
+                content:"Oui",
+                function:"renewToken"
+              },
+              {
+                type:"button",
+                content: "Non",
+                function: "noRenew"
+              }
+            ]
+          })
+        }
       }
     }
     setTimeout(() => {
       this.verifExpToken()
-    },600000)
+    },300000)
   }
 
   logout():void{
     localStorage.removeItem("token");
     this.contextService.modalIsActif(false);
-    this.contextService.changeModalContent({})
-    this.contextService.isConnected(false)
+    this.contextService.changeModalContent({});
+    this.contextService.isConnected(false);
+    this.contextService.changeRenewToken(true);
     this.route.navigate(["/home"]);
   }
 }
