@@ -43,7 +43,6 @@ export class AppComponent {
     const token = localStorage.getItem("token")
     if(token){
       const payload:Token = jwtDecode(token)
-      console.log(payload.exp - Math.floor(Date.now()/1000))
       if(payload.exp - Math.floor(Date.now()/1000) < 0){
         this.logout()
       }else{
@@ -74,7 +73,7 @@ export class AppComponent {
     }
     setTimeout(() => {
       this.verifExpToken()
-    },300000)
+    },1000)
   }
 
   logout():void{

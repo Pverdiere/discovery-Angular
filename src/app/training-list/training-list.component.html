@@ -1,1 +1,6 @@
-<p>training-list works!</p>
+<div *ngFor="let training of trainings">
+    <div>id: {{training.id}}</div>
+    <div>name: <a routerLink="/training/{{training.id}}">{{training.name}}</a></div>
+    <div *ngIf="training.coach; else noCoach">coach: {{training.coach.name}}</div>
+    <ng-template #noCoach>Pas de coach désigné</ng-template>
+</div>

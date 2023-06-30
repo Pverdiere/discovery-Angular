@@ -1,1 +1,21 @@
-<p>training-details works!</p>
+<h2>
+    {{training.name}}
+</h2>
+
+<div *ngIf="training.coach">
+    coach: <a routerLink="/profil/{{training.coachId}}">{{training.coach.name}}</a>
+</div>
+
+<h3>Modules</h3>
+<ul>
+    <li *ngFor="let module of training.modules">
+        <a routerLink="/module/{{module.moduleId}}">{{module.module.name}}</a>
+    </li>
+</ul>
+
+<h3>Apprenant</h3>
+<ul>
+    <li *ngFor="let user of training.users">
+        <a routerLink="/profil/{{user.userId}}">{{user.user.name}}</a>
+    </li>
+</ul>
