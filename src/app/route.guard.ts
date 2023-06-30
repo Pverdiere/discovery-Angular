@@ -38,7 +38,7 @@ export const routeGuard: CanActivateFn = (
       if(tokenContent.role === 1 && (routesRole2.includes(route.routeConfig.path) || routesRole1.includes(route.routeConfig.path))) return true
     }
   }else{
-    if(route.routeConfig?.path === "login" || route.routeConfig?.path === "home"){
+    if(route.routeConfig?.path === "login" || route.routeConfig?.path === "home" || route.routeConfig?.path === "signup"){
       return true;
     }
   }

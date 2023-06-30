@@ -41,4 +41,11 @@ export class UserService {
       {headers:new HttpHeaders().set("Authorization", "Bearer "+token)}
     )
   }
+
+  createUser(user:User): Observable<User>{
+    return this.http.post<User>(
+      this.serverUrl+"/user/signup",
+      user
+    )
+  }
 }
