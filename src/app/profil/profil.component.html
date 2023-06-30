@@ -12,7 +12,8 @@
         <div *ngIf="user.trainings && user.trainings.length > 0; else noTrainings">
             <ul>
                 <li *ngFor="let training of user.trainings">
-                    {{training.training.name}}
+                    <a routerLink="/training/{{training.trainingId}}">{{training.training.name}}</a>
+                    
                 </li>
             </ul>
         </div>
