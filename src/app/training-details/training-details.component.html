@@ -14,8 +14,12 @@
 </ul>
 
 <h3>Apprenant</h3>
-<ul>
+<ul *ngIf="training.users && training.users.length > 0; else noApprenant">
     <li *ngFor="let user of training.users">
         <a routerLink="/profil/{{user.userId}}">{{user.user.name}}</a>
     </li>
 </ul>
+
+<ng-template #noApprenant>
+    Pas d'apprenant inscrit à la formation
+</ng-template>
